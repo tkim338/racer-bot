@@ -3,7 +3,7 @@ import math
 import numpy as np
 
 
-def test_track_generation():
+def generate_track():
     # create rounded square track
     track_coor = [(i + 10.0, 0.0) for i in range(80)] + \
                  [(90 + 10 * math.cos(angle), 10 + 10 * math.sin(angle))
@@ -20,4 +20,19 @@ def test_track_generation():
     width = 10
 
     t = Track(track_coordinates=track_coor, track_width=width)
-    assert t is not None
+    return t
+
+
+def test_on_track():
+    track = generate_track()
+    assert track.is_within_track((50, 0)) is True
+
+
+def test_outside_track():
+    track = generate_track()
+    assert track.is_within_track((-10, -10)) is False
+
+
+def test_inside_track():
+    track = generate_track()
+    assert track.is_within_track((50, 50)) is False
